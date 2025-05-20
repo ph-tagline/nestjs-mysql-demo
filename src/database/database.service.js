@@ -1,4 +1,4 @@
-const { Injectable, OnModuleInit, OnModuleDestroy } = require('@nestjs/common');
+const { OnModuleInit, OnModuleDestroy } = require('@nestjs/common');
 const { ConfigService } = require('@nestjs/config');
 const mysql = require('mysql2/promise');
 
@@ -59,7 +59,5 @@ class DatabaseService {
     }
   }
 }
-
-Injectable()(DatabaseService);
 
 exports.DatabaseService = DatabaseService;
