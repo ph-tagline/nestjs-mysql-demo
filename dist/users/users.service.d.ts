@@ -1,11 +1,6 @@
 import { DatabaseService } from '../database/database.service';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    created_at: Date;
-}
+import { User } from './interfaces/user.interface';
 export declare class UsersService {
     private readonly databaseService;
     constructor(databaseService: DatabaseService);
@@ -15,4 +10,3 @@ export declare class UsersService {
     update(id: number, updateUserDto: UpdateUserDto): Promise<User>;
     remove(id: number): Promise<void>;
 }
-export {};

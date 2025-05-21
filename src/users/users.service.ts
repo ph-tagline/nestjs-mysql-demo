@@ -1,13 +1,7 @@
 import { Injectable, NotFoundException, ConflictException, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  created_at: Date;
-}
+import { User } from './interfaces/user.interface';
 
 @Injectable()
 export class UsersService {

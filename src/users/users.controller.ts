@@ -2,6 +2,7 @@ import { Controller, Get, Post, Put, Delete, Body, Param, HttpCode, HttpStatus }
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { User } from './interfaces/user.interface';
 
 @Controller('users')
 @ApiTags('users')
@@ -11,7 +12,7 @@ export class UsersController {
   @Get()
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, description: 'Return all users' })
-  async findAll() {
+  async findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
@@ -20,7 +21,7 @@ export class UsersController {
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiResponse({ status: 200, description: 'Return the user' })
   @ApiResponse({ status: 404, description: 'User not found' })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<User> {
     return this.usersService.findOne(Number(id));
   }
 
@@ -30,7 +31,7 @@ export class UsersController {
   @ApiResponse({ status: 201, description: 'User created successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 409, description: 'Email already exists' })
-  async create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }
 
@@ -41,7 +42,7 @@ export class UsersController {
   @ApiResponse({ status: 200, description: 'User updated successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<User> {
     return this.usersService.update(Number(id), updateUserDto);
   }
 
@@ -51,7 +52,7 @@ export class UsersController {
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiResponse({ status: 204, description: 'User deleted successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string): Promise<void> {
     return this.usersService.remove(Number(id));
   }
 }
