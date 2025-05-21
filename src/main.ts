@@ -7,14 +7,12 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  // Enable global validation
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     transform: true,
     forbidNonWhitelisted: true,
   }));
 
-  // Set up Swagger
   const config = new DocumentBuilder()
     .setTitle('NestJS MySQL CRUD API')
     .setDescription('A RESTful API with NestJS and MySQL')
@@ -24,7 +22,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   
-  // Configure CORS if needed
   app.enableCors();
   
   const port = process.env.PORT || 3000;
