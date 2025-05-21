@@ -1,11 +1,9 @@
 const { Module } = require('@nestjs/common');
 const { ConfigModule } = require('@nestjs/config');
-const { UsersModule } = require('./users/users.module');
 const { DatabaseModule } = require('./database/database.module');
+const { UsersModule } = require('./users/users.module');
 
-class AppModule {}
-
-Module({
+@Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
@@ -13,6 +11,7 @@ Module({
     DatabaseModule,
     UsersModule,
   ],
-})(AppModule);
+})
+class AppModule {}
 
 exports.AppModule = AppModule;

@@ -1,13 +1,13 @@
-const { Injectable, OnModuleInit, OnModuleDestroy } = require('@nestjs/common');
-const { ConfigService } = require('@nestjs/config');
-const mysql = require('mysql2/promise');
+import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import * as mysql from 'mysql2/promise';
+import { Pool, PoolConnection } from 'mysql2/promise';
 
 @Injectable()
-class DatabaseService {
-  constructor(configService) {
-    this.configService = configService;
-    this.pool = null;
-  }
+export class DatabaseService implements OnModuleInit, OnModuleDestroy {
+  private pool: Pool;
+
+  constructor(private configService: ConfigService) {}
 
   async onModuleInit() {
     this.pool = mysql.createPool({
@@ -21,13 +21,11 @@ class DatabaseService {
       queueLimit: 0
     });
     
-    // Verify connection
     try {
       const connection = await this.pool.getConnection();
       console.log('Database connection established successfully');
       connection.release();
       
-      // Create users table if it doesn't exist
       await this.executeQuery(`
         CREATE TABLE IF NOT EXISTS users (
           id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,15 +48,13 @@ class DatabaseService {
     }
   }
 
-  async executeQuery(query, params = []) {
+  async executeQuery<T>(query: string, params: any[] = []): Promise<T> {
     try {
-      const [rows, fields] = await this.pool.execute(query, params);
-      return rows;
+      const [rows] = await this.pool.execute(query, params);
+      return rows as T;
     } catch (error) {
       console.error('Query execution error:', error.message);
       throw error;
     }
   }
 }
-
-exports.DatabaseService = DatabaseService;
