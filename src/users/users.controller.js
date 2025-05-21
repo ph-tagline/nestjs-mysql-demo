@@ -30,5 +30,10 @@ class UsersController {
 }
 
 Controller('users')(UsersController);
+Get()(UsersController.prototype, 'findAll');
+Get(':id')(UsersController.prototype, 'findOne');
+Post()(UsersController.prototype, 'create');
+Put(':id')(UsersController.prototype, 'update');
+Delete(':id')(UsersController.prototype, 'remove');
 
 exports.UsersController = UsersController;
