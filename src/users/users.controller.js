@@ -8,27 +8,34 @@ class UsersController {
     this.usersService = usersService;
   }
 
+  @Get()
   async findAll() {
     return this.usersService.findAll();
   }
 
-  async findOne(id) {
-    return this.usersService.findOne(id);
+  @Get(':id')
+  async findOne(@Param('id') id) {
+    return this.usersService.findOne(Number(id));
   }
 
-  async create(createUserDto) {
+  @Post()
+  async create(@Body() createUserDto) {
     return this.usersService.create(createUserDto);
   }
 
-  async update(id, updateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  @Put(':id')
+  async update(@Param('id') id, @Body() updateUserDto) {
+    return this.usersService.update(Number(id), updateUserDto);
   }
 
-  async remove(id) {
-    return this.usersService.remove(id);
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id') id) {
+    return this.usersService.remove(Number(id));
   }
 }
 
 Controller('users')(UsersController);
+ApiTags('users')(UsersController);
 
 exports.UsersController = UsersController;
